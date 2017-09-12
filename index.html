@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <title>Ejemplos de Vue.js</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row" id="app">
+        <!-- Uso de Interpolación / verbatim / uso de V-for-->
+        <div class="col-lg-12 col-mg-12">
+            <input type="text" v-model="input_1" class="form-control">
+            <label>Nombre:{{input_1}}</label>
+            <ul>
+                <li v-for="(url, index) in urls" :key="index">
+                    <a :href="url.url" v-text="url.nombre"></a>
+                </li>
+            </ul>
+            <div  v-if="mostrar">
+                <h4 v-text="mensaje"></h4>
+                <img :src="imagenes"></img>
+            </div>
+            <button @click="set_mostrar()" class="btn btn-block btn-info">Mostrar / Ocultar</button>
+        </div>
+
+        <!-- Variable existente, pero no declarada-->
+        <div class="col-lg-12 col-mg-12">
+            <h2 v-if="variable_comentada" v-text="variable_comentada"></h2>
+        </div>
+        <!-- Uso
+        de v-if / uso de two way data-binding-->
+        <div class="col-lg-12 col-mg-12">
+            <label for="input_nota">Introduce una nota: </label><input type="text" v-model="nota" id="input_nota" name="input_nota" class="form-control">
+            <h2>Estado:
+                <strong v-if="nota && nota>=5 && nota<=9">Aprobado</strong>
+                <strong v-else-if="nota && nota>=10">Sos un mostro man</strong>
+                <strong v-else>Reprobado</strong>
+            </h2>
+        </div>
+
+        <!-- Uso de v-for-->
+        <div class="col-lg-12 col-mg-12">
+            <div class="row">
+                <div class="col-lg-6">
+                    <ol>
+                        <li v-for="(pelicula,index) in peliculas">{{pelicula}} - 
+                            <button @click="remove_movie(index)" class="btn btn-warging">
+                                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                            </button>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-lg-6">
+                    <div>
+                        <form @submit.prevent="add_movie()" class="form-inline">
+                                <label class="control-form" for="name_movie">Nombre de la pelicula:</label>
+                                <input type="text" v-model="nueva_pelicula" id="name_movie" class="form-control">
+                                <button type="submit" class="btn btn-block btn-info"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-mg-12">
+                    <ul>
+                        <li v-for="(url, index) in urls">[{{index}}] {{url.nombre}} {{url.url}} {{url.prioridad}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-mg-12">
+                    <ul>
+                        <li v-for="(value, key, index) in smartphone">[{{index}}] {{key | capitalize_custom }}: <strong>{{value}}</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Uso de computed-->
+                <div class="col-lg-12 col-mg-12">
+                    <h4>Computed</h4>
+                    <h4 v-text="nombre_desarrollador"></h4>
+                    <h4 v-text="apellido_desarrollador"></h4>
+                    <h4 v-text="nombre_desarrollador+' '+apellido_desarrollador"></h4>
+                    <h4 v-text="nombre_desarrollador+apellido_desarrollador"></h4>
+                    <h4 v-text="nombre_mas_apellido"></h4>
+                    <ol>
+                        <li v-for="(pelicula,index) in peliculas_ordenadas">{{pelicula}} -</li>
+                    </ol>
+                </div>
+                <!-- Uso de filtros-->
+                <div class="col-lg-12 col-mg-12">
+                    <h2>Uso de Filtros.-</h2>
+                    <input type="search" v-model="tac_pelicula" placeholder="Buscar pelicula">
+                    <ol>
+                        <li v-for="(pelicula,index) in buscar_peliculas">{{pelicula}} -</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="app_2">
+        <!-- Uso de bind-->
+        <div class="col-lg-12 col-mg-12">
+            <h2>Uso de V-bind <strong v-text="mensaje"></strong></h2>
+            <ul>
+                <li>
+                    <p class="bg-primary" v-bind:class='{active:div_1}'>primary</p><!-- v-bind:class='{bg-primary: div_1== 1}' -->
+                </li>
+                <li>
+                    <p class="bg-success" :class="{active:div_2}">success</p><!-- bg-success -->
+                </li>
+                <li>
+                    <p class="bg-info">info</p>
+                </li>
+                <li>
+                    <p class="bg-warning">warning</p>
+                </li>
+                <li>
+                    <p class="bg-danger">dange</p>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-12 col-mg-12">
+            <h3>Uso de Ajax con axios [ajax interno]</h3>
+            <input type="search" v-model="tac_empleado" placeholder="Buscar Empleado">
+            <ul>
+                <li v-for="(empleado, index) in buscar_empleado">[{{index}}] - {{empleado.fields['nombre']}} - {{empleado.fields['email']}}</li>
+            </ul>
+        </div>
+        <div class="col-lg-12 col-mg-12">
+            <h3>Uso de Ajax con axios [ajax externo]</h3>
+            <ul>
+                <li v-for="(externo, index) in externos">[{{index}}] - {{externo.userId}} - {{externo.title}}</li>
+            </ul>
+        </div>
+        <div class="col-lg-12 col-mg-12">
+            <h3>Componentes</h3>
+            <div class="row">
+                <div class="col-lg-6 col-mg-6">
+                    <cmp_urls></cmp_urls>
+                </div>
+                <div class="col-lg-6 col-mg-6">
+                    <cmp_smartphone :objeto="smartphones"></cmp_smartphone>
+                </div>
+                <div class="col-lg-6 col-mg-6">
+                    <cmp_otro :objeto="mensaje" inline-template>
+                        <div class="div_cmp_urls">
+                            <h2 >Hola!, soy el: <strong v-text="name"></strong></h2>
+                            <p>Texto de prueba: <b v-text="objeto"></b></p>
+                        </div>
+                    </cmp_otro>
+                </div>
+                <div class="col-lg-6 col-mg-6">
+                    <cmp_padre></cmp_padre>
+                </div>
+                <div class="col-lg-12 col-mg-12">
+                    <button @click="cmp_elegido='cmp_urls'" class="btn btn-info">Componente URL</button>
+                    <button @click="cmp_elegido='cmp_smartphone'" class="btn btn-info">Componente Smartphone</button>
+                    <button @click="cmp_elegido='cmp_padre'" class="btn btn-info">Componente Padre</button>
+                </div>
+                <div class="col-lg-12 col-mg-12">
+                    <component :is="cmp_elegido"></component>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script>
+        const url_global ='';
+    </script>
+    <script src="js/bootstrap.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
